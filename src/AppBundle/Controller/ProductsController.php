@@ -7,15 +7,22 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+    
     class ProductsController extends Controller {
+
+        const PRODUCTS_TEST = [
+            ['id' => 1, 'reference' => 'AFR-1'],
+            ['id' => 2, 'reference' => 'AFR-2'],
+            ['id' => 3, 'reference' => 'AFR-3'],
+            ['id' => 4, 'reference' => 'AFR-4']
+        ];
 
         /**
          * @Route("/products")
          * @Method("GET")
          */
         public function indexAction() {
-            return new Response("afficher la liste des produits");
+            return $this->json(self::PRODUCTS_TEST);
         }
 
         /**
@@ -23,7 +30,12 @@
          * @Method("GET")
          */
         public function showAction($id) {
-            return new Response("afficher le produit numéro ".$id);
+            foreach(self::PRODUCTS_TEST as $product) {
+                if ($product['id'] === (int) $id) {
+                    return $this->json($product);
+                }
+            }
+            return $this->json(['error' => 'Product '.$id.' not found']);
         }
 
         /**
