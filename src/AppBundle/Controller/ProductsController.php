@@ -18,11 +18,23 @@
         ];
 
         /**
-         * @Route("/products")
+         * @Route(
+         *    "/products.{_format}", 
+         *   defaults={"_format": "html"},
+         *  requirements={
+         *         "_format": "html|json"
+         *     })
          * @Method("GET")
          */
-        public function indexAction() {
-            return $this->json(self::PRODUCTS_TEST);
+        public function indexAction(Request $request) {
+            switch ($request->getRequestFormat()) {
+                case "json":
+                    return $this->json(self::PRODUCTS_TEST);
+                case "html":
+                    return $this->render('products/index.html.twig', [
+                        'products' => self::PRODUCTS_TEST
+                    ]);
+            }
         }
 
         /**
