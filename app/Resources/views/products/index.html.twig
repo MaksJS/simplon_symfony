@@ -1,6 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
 <h1>Products</h1>
+<a href="/products/create">Ajouter un produit</a>
 <ul>
     {% for product in products %}
-        <li>ID : {{ product['id'] }} - REF: {{ product['reference'] }}</li>
+        <li>ID : {{ product['id'] }} - REF: {{ product['reference'] }} 
+        - <a href="/products/{{ product['id'] }}">Voir</a>
+        - <a href="/products/{{ product['id'] }}/edit">Editer</a>
+        - Supprimer
+        </li>
     {% endfor %}
 </ul>
+
+{% endblock %}
