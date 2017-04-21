@@ -38,32 +38,53 @@
         }
 
         /**
-         * @Route("/products/{id}")
+         * @Route(
+         *   "/products/{id}.{_format}",
+         *    defaults={"_format": "html"},
+         *    requirements={
+         *      "_format": "html|json",
+         *      "id": "\d+"
+         *     }
+         * ) 
          * @Method("GET")
          */
-        public function showAction($id) {
-            foreach(self::PRODUCTS_TEST as $product) {
-                if ($product['id'] === (int) $id) {
-                    return $this->json($product);
-                }
+        public function showAction(Request $request, int $id) {
+            foreach(self::PRODUCTS_TEST as $product) { // je parcous tous les produits
+                if ($product['id'] === $id) { // je cherche le produit ayant l'ID passé en paramètre
+                    switch ($request->getRequestFormat()) {
+                        case "json":
+                            return $this->json($product);
+                        case "html":
+                            return $this->render('products/show.html.twig', compact('product'));
+                            // compact('product') égal à [ 'product' => $product ]
+                    }
+                }   
             }
-            return $this->json(['error' => 'Product '.$id.' not found']);
+            // sinon je sors de la boucle, ça veut dire que j'ai pas trouvé le produit
+            return $this->json(['error' => 'pas trouve']);
         }
 
         /**
-         * @Route("/products/{id}")
-         * @Method({"PUT", "PATCH"})
+         * @Route("/products/{id}/edit")
+         * @Method({"GET", "PUT", "PATCH"})
          */
-        public function editAction($id) {
-            return new Response("editer le produit numéro ".$id);
+        public function editAction(int $id) {
+            // si c'est GET 
+                // je parcours les produits
+                    // afficher form d'édition en passant le produit trouvé
+            // sinon si c'est PUT OU PATCH
+                return new Response("j'édite le produit dans la bdd...");
         }
 
         /**
-         * @Route("/products")
-         * @Method("POST")
+         * @Route("/products/create")
+         * @Method({"GET", "POST"})
          */
         public function createAction() {
-            return new Response("créer un nouveau produit");
+            // si c'est GET 
+                // afficher form de création
+            // sinon si c'est POST
+                return new Response("j'ajoute le produit dans la bdd...");
         }
 
         /**
