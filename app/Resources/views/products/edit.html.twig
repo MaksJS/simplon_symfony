@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<form action="" method="post">
+<input type="hidden" name="_method" value="PATCH" />
+<label>Référence</label>
+<input type="text" name="reference" value="{{ product['reference'] }}"   />
+<input type="submit" value="Editer" />
+</form>
+
+
+{% endblock %}
