@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<form action="/products/create" method="post">
+<label>Référence</label>
+<input type="text" name="reference" />
+<input type="submit" value="Créer" />
+</form>
+
+
+{% endblock %}
