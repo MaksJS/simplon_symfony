@@ -68,23 +68,32 @@
          * @Route("/products/{id}/edit")
          * @Method({"GET", "PUT", "PATCH"})
          */
-        public function editAction(int $id) {
-            // si c'est GET 
-                // je parcours les produits
-                    // afficher form d'édition en passant le produit trouvé
-            // sinon si c'est PUT OU PATCH
-                return new Response("j'édite le produit dans la bdd...");
+        public function editAction(Request $request, int $id) {
+            switch ($request->getMethod()) {
+                case "GET":
+                    foreach(self::PRODUCTS_TEST as $product) {
+                        if ($product['id'] === $id) {
+                            return $this->render('products/edit.html.twig', compact('product'));
+                        }
+                    }
+                    return $this->json(['error' => 'Produit non existant']);
+                case "PUT":
+                case "PATCH":
+                    return new Response("j'édite le produit dans la bdd...");
+            }
         }
 
         /**
          * @Route("/products/create")
          * @Method({"GET", "POST"})
          */
-        public function createAction() {
-            // si c'est GET 
-                // afficher form de création
-            // sinon si c'est POST
-                return new Response("j'ajoute le produit dans la bdd...");
+        public function createAction(Request $request) {
+            switch ($request->getMethod()) {
+                case "GET":
+                    return $this->render('products/create.html.twig');
+                case "POST":
+                    return new Response("j'ajoute le produit dans la bdd...");
+            }
         }
 
         /**
