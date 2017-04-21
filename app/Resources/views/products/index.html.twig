@@ -9,7 +9,11 @@
         <li>ID : {{ product['id'] }} - REF: {{ product['reference'] }} 
         - <a href="/products/{{ product['id'] }}">Voir</a>
         - <a href="/products/{{ product['id'] }}/edit">Editer</a>
-        - Supprimer
+        - 
+        <form action="/products/{{ product['id'] }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="submit" value="Supprimer" />
+        </form>
         </li>
     {% endfor %}
 </ul>
