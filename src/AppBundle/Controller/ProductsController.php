@@ -79,12 +79,19 @@
                     return $this->json(['error' => 'Produit non existant']);
                 case "PUT":
                 case "PATCH":
-                    return new Response("j'édite le produit dans la bdd...");
+                    $this->addFlash('notice', 'Votre produit a bien été édité');
+                    return $this->redirectToRoute('app_products_index');
             }
         }
 
         /**
-         * @Route("/products/create")
+         * @Route("/products/create.{_format}",
+         *    defaults={"_format": "html"},
+         *    requirements={
+         *      "_format": "html|json",
+         *      "id": "\d+"
+         *     }
+         * ) 
          * @Method({"GET", "POST"})
          */
         public function createAction(Request $request) {
@@ -92,7 +99,13 @@
                 case "GET":
                     return $this->render('products/create.html.twig');
                 case "POST":
-                    return new Response("j'ajoute le produit dans la bdd...");
+                    switch ($request->getRequestFormat()) {
+                        case "json":
+                            return $this->json(['notice' => 'Votre produit a bien ete cree']);
+                        case "html":
+                            $this->addFlash('notice', 'Votre produit a bien été créé');
+                            return $this->redirectToRoute('app_products_index');
+                    }
             }
         }
 
@@ -101,6 +114,7 @@
          * @Method("DELETE")
          */
         public function deleteAction($id) {
-            return new Response("supprimer le produit numéro ".$id);
+            $this->addFlash('notice', 'Votre produit a bien été supprimé');
+            return $this->redirectToRoute('app_products_index');
         }
     }
