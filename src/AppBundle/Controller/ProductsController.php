@@ -65,7 +65,13 @@
         }
 
         /**
-         * @Route("/products/{id}/edit")
+         * @Route("/products/edit/{id}.{_format}",
+         *    defaults={"_format": "html"},
+         *    requirements={
+         *      "_format": "html|json",
+         *      "id": "\d+"
+         *     }
+         * ) 
          * @Method({"GET", "PUT", "PATCH"})
          */
         public function editAction(Request $request, int $id) {
@@ -79,8 +85,13 @@
                     return $this->json(['error' => 'Produit non existant']);
                 case "PUT":
                 case "PATCH":
-                    $this->addFlash('notice', 'Votre produit a bien été édité');
-                    return $this->redirectToRoute('app_products_index');
+                    switch ($request->getRequestFormat()) {
+                        case "json":
+                            return $this->json(['notice' => 'Votre produit a bien ete edite']);
+                        case "html":
+                            $this->addFlash('notice', 'Votre produit a bien été édité');
+                            return $this->redirectToRoute('app_products_index');
+                    }
             }
         }
 
@@ -110,11 +121,22 @@
         }
 
         /**
-         * @Route("/products/{id}")
+         * @Route("/products/{id}.{_format}",
+         *    defaults={"_format": "html"},
+         *    requirements={
+         *      "_format": "html|json",
+         *      "id": "\d+"
+         *     }
+         * ) 
          * @Method("DELETE")
          */
-        public function deleteAction($id) {
-            $this->addFlash('notice', 'Votre produit a bien été supprimé');
-            return $this->redirectToRoute('app_products_index');
+        public function deleteAction(Request $request, $id) {
+            switch ($request->getRequestFormat()) {
+                case "json":
+                    return $this->json(['notice' => 'Votre produit a bien ete supprime']);
+                case "html":
+                    $this->addFlash('notice', 'Votre produit a bien été supprimé');
+                    return $this->redirectToRoute('app_products_index');
+            }
         }
     }
