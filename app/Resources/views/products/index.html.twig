@@ -13,6 +13,14 @@
     </div>
 {% endfor %}
 
+<div class="panel panel-success" style="display:none">
+     <div class="panel-heading">Message</div>
+        <div class="panel-body">
+            <p></p>
+        </div>
+    </div>  
+</div>
+
 <a href="{{ path('app_products_create') }}">Ajouter un produit</a>
 <table class="table table-bordered">
     <tr>
@@ -37,6 +45,7 @@
                     <input type="hidden" name="_method" value="DELETE" />
                     <input type="submit" value="Supprimer" />
                 </form>
+                <button onClick="deleteProduct({{ product.id }})">Supprimer avec ajax</button>
             </td>
         </tr>
     {% endfor %}
