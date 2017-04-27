@@ -3,14 +3,20 @@
 {% block body %}
 
 <h1>Products</h1>
-<a href="/products/create">Ajouter un produit</a>
+
+{% for message in app.session.flashBag.get('notice') %}
+    <div class="panel flash-notice">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<a href="{{ path('app_products_create') }}">Ajouter un produit</a>
 <ul>
     {% for product in products %}
         <li>ID : {{ product['id'] }} - REF: {{ product['reference'] }} 
-        - <a href="/products/{{ product['id'] }}">Voir</a>
-        - <a href="/products/{{ product['id'] }}/edit">Editer</a>
-        - 
-        <form action="/products/{{ product['id'] }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
+        - <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
+        - <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>
+        <form action="{{ path('app_products_delete', {id: product.id}) }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="submit" value="Supprimer" />
         </form>
