@@ -5,23 +5,41 @@
 <h1>Products</h1>
 
 {% for message in app.session.flashBag.get('notice') %}
-    <div class="panel flash-notice">
-        {{ message }}
+    <div class="panel panel-success">
+     <div class="panel-heading">Message</div>
+        <div class="panel-body">
+            <p>{{ message }}</p>
+        </div>
     </div>
 {% endfor %}
 
 <a href="{{ path('app_products_create') }}">Ajouter un produit</a>
-<ul>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Référence
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
     {% for product in products %}
-        <li>ID : {{ product['id'] }} - REF: {{ product['reference'] }} 
-        - <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
-        - <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>
-        <form action="{{ path('app_products_delete', {id: product.id}) }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
-            <input type="hidden" name="_method" value="DELETE" />
-            <input type="submit" value="Supprimer" />
-        </form>
-        </li>
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.reference }}</td>
+            <td>
+                <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
+                <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>
+                <form action="{{ path('app_products_delete', {id: product.id}) }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <input type="submit" value="Supprimer" />
+                </form>
+            </td>
+        </tr>
     {% endfor %}
-</ul>
+</table>
 
 {% endblock %}
