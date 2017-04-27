@@ -1,0 +1,14 @@
+@startuml
+namespace Entity {
+    class Product {
+        + id: integer
+        + reference: string
+        + price: float
+    }
+
+    class Category {
+        + id: integer
+        + designation: string
+    }
+}
+@enduml
