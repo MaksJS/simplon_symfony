@@ -27,13 +27,15 @@
          * @Method("GET")
          */
         public function indexAction(Request $request) {
+            $products = $this->getDoctrine()
+                ->getRepository('AppBundle:Product')
+                ->findAll();
+
             switch ($request->getRequestFormat()) {
                 case "json":
-                    return $this->json(self::PRODUCTS_TEST);
+                    return $this->json($products);
                 case "html":
-                    return $this->render('products/index.html.twig', [
-                        'products' => self::PRODUCTS_TEST
-                    ]);
+                    return $this->render('products/index.html.twig', compact('products'));
             }
         }
 
