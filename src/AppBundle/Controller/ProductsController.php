@@ -7,6 +7,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+    use AppBundle\Entity\Product;
     
     class ProductsController extends Controller {
 
@@ -30,12 +31,12 @@
             $products = $this->getDoctrine()
                 ->getRepository('AppBundle:Product')
                 ->findAll();
-
             switch ($request->getRequestFormat()) {
                 case "json":
                     return $this->json($products);
                 case "html":
                     return $this->render('products/index.html.twig', compact('products'));
+                    // compact('products') = ['products' => $products]
             }
         }
 
@@ -51,19 +52,25 @@
          * @Method("GET")
          */
         public function showAction(Request $request, int $id) {
-            foreach(self::PRODUCTS_TEST as $product) { // je parcous tous les produits
-                if ($product['id'] === $id) { // je cherche le produit ayant l'ID passé en paramètre
-                    switch ($request->getRequestFormat()) {
-                        case "json":
-                            return $this->json($product);
-                        case "html":
-                            return $this->render('products/show.html.twig', compact('product'));
-                            // compact('product') égal à [ 'product' => $product ]
+            $product = $this->getDoctrine()
+                ->getRepository('AppBundle:Product') // on récupère le Repository Product
+                ->find($id); // on récupère le Produit ayant l'ID passé dans la route
+            switch ($request->getRequestFormat()) { // on switche en fonction du _format passé dans la route
+                case "json": // si c'est du json
+                    if ($product) { // si un Produit a été trouvé dans la base de donnée
+                        return $this->json($product); // afficher le produit au format JSON
                     }
-                }   
+                    else { // sinon si un Produit n'a pas été trouvé
+                        return $this->json('Product '.$id.' not found', 404); // renvoyer une erreur au format JSON
+                    }
+                case "html": // si c'est du html
+                    if ($product) { // si un Produit a été trouvé dans la base de donnée
+                        return $this->render('products/show.html.twig', compact('product')); // afficher la vue Twig avec le produit trouvé dans la base de donnée
+                    }
+                    else { // sinon si un Produit n'a pas été trouvé
+                        throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
+                    }
             }
-            // sinon je sors de la boucle, ça veut dire que j'ai pas trouvé le produit
-            return $this->json(['error' => 'pas trouve']);
         }
 
         /**
@@ -112,11 +119,23 @@
                 case "GET":
                     return $this->render('products/create.html.twig');
                 case "POST":
+                    // on récupère les données passées en POST
+                    $reference = $request->request->get('reference');
+                    $price = $request->request->get('price');
+                    
+                    $product = new Product();
+                    $product->setReference($reference);
+                    $product->setPrice($price);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($product);
+                    $em->flush();
+
                     switch ($request->getRequestFormat()) {
                         case "json":
-                            return $this->json(['notice' => 'Votre produit a bien ete cree']);
+                            return $this->json('Le produit '.$product->getId().' a bien été créé');
                         case "html":
-                            $this->addFlash('notice', 'Votre produit a bien été créé');
+                            $this->addFlash('notice', 'Le produit '.$product->getId().' a bien été créé');
                             return $this->redirectToRoute('app_products_index');
                     }
             }
