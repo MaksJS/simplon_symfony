@@ -5,6 +5,7 @@ function deleteProduct(id) {
     method: 'DELETE', 
     }).done(function(data) {
         console.log(data.notice);
+        $('tr#product-'+id).remove();
         $('.panel.panel-success')
             .show({
                 duration: 2000,
