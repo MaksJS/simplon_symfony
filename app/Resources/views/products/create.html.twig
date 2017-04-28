@@ -2,10 +2,14 @@
 
 {% block body %}
 
-<form action="/products/create" method="post">
-<label>Référence</label>
+<form action="{{ path('app_products_create') }}" class="well" method="post">
+<label>Reference</label>
 <input type="text" name="reference" />
-<input type="submit" value="Créer" />
+<br />
+<label>Price</label>
+<input type="text" name="price" />
+<br />
+<input type="submit" class="btn btn-primary" value="Créer" />
 </form>
 
 
