@@ -1,4 +1,4 @@
 simplon_project
 ===============
 
-A Symfony project created on April 20, 2017, 8:24 am.
+$ git clone https://github.com/MaksJS/simplon_symfony.git && composer install && bower install
