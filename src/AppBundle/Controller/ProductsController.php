@@ -84,22 +84,47 @@
          * @Method({"GET", "PUT", "PATCH"})
          */
         public function editAction(Request $request, int $id) {
+            $product = $this->getDoctrine()
+                ->getRepository('AppBundle:Product') // on récupère le Repository Product
+                ->find($id); // on récupère le Produit ayant l'ID passé dans la route
             switch ($request->getMethod()) {
                 case "GET":
-                    foreach(self::PRODUCTS_TEST as $product) {
-                        if ($product['id'] === $id) {
-                            return $this->render('products/edit.html.twig', compact('product'));
-                        }
+                    if ($product) {
+                        return $this->render('products/edit.html.twig', compact('product'));
                     }
-                    return $this->json(['error' => 'Produit non existant']);
+                    else {
+                        throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
+                    }
                 case "PUT":
                 case "PATCH":
+                    // on récupère les données passées en POST
+                    $reference = $request->request->get('reference');
+                    $price = $request->request->get('price');
+                    
+                    if ($product) {
+                        $product->setReference($reference);
+                        $product->setPrice($price);
+
+                        $em = $this->getDoctrine()->getManager();
+                        $em->flush();
+                    }
+
                     switch ($request->getRequestFormat()) {
                         case "json":
-                            return $this->json(['notice' => 'Votre produit a bien ete edite']);
+                            if ($product) {
+                                return $this->json('Votre produit a bien ete edite');
+                            }
+                            else {
+                                return $this->json('Product '.$id.' not found', 404); // renvoyer une erreur au format JSON
+                            }
                         case "html":
-                            $this->addFlash('notice', 'Votre produit a bien été édité');
-                            return $this->redirectToRoute('app_products_index');
+                            if ($product) {
+                                $this->addFlash('notice', 'Votre produit a bien été édité');
+                                return $this->redirectToRoute('app_products_index');
+                            }
+                            else {
+                                throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
+                            }
                     }
             }
         }
@@ -152,12 +177,32 @@
          * @Method("DELETE")
          */
         public function deleteAction(Request $request, $id) {
+            $product = $this->getDoctrine()
+                ->getRepository('AppBundle:Product') // on récupère le Repository Product
+                ->find($id); // on récupère le Produit ayant l'ID passé dans la route
+
+            if ($product) {
+                $em = $this->getDoctrine()->getManager(); // on récupère l'Entity Manager
+                $em->remove($product); // on prépare la requête de suppression du Produit
+                $em->flush(); // on éxecute la requête
+            }
+
             switch ($request->getRequestFormat()) {
                 case "json":
-                    return $this->json(['notice' => 'Votre produit a bien ete supprime']);
+                    if ($product) { // Si le produit a été trouvé
+                        return $this->json('Votre produit a bien ete supprime'); // on confirme la suppression
+                    }
+                    else { // sinon si un Produit n'a pas été trouvé
+                        return $this->json('Product '.$id.' not found', 404); // renvoyer une erreur au format JSON
+                    }
                 case "html":
-                    $this->addFlash('notice', 'Votre produit a bien été supprimé');
-                    return $this->redirectToRoute('app_products_index');
+                    if ($product) {
+                        $this->addFlash('notice', 'Votre produit a bien été supprimé');
+                        return $this->redirectToRoute('app_products_index');
+                    }
+                    else {
+                        throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
+                    }
             }
         }
     }
