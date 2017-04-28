@@ -2,11 +2,15 @@
 
 {% block body %}
 
-<form action="" method="post">
+<form class="well" method="post">
 <input type="hidden" name="_method" value="PATCH" />
 <label>Référence</label>
-<input type="text" name="reference" value="{{ product['reference'] }}"   />
-<input type="submit" value="Editer" />
+<input type="text" name="reference" value="{{ product.reference }}"   />
+<br />
+<label>Price</label>
+<input type="number" name="price" value="{{ product.price }}"   />
+<br/>
+<input type="submit" class="btn btn-primary" value="Editer" />
 </form>
 
 
