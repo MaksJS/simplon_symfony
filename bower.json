@@ -1,0 +1,22 @@
+{
+  "name": "simplon_project",
+  "homepage": "https://github.com/MaksJS/simplon_symfony",
+  "authors": [
+    "Maks <maxence.derous@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
