@@ -4,10 +4,13 @@
 
     use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     
     /**
      * @ORM\Entity
      * @ORM\Table(name="categories")
+     * @UniqueEntity("designation")
      */
     class Category {
 
@@ -19,7 +22,8 @@
         private $id;
 
         /**
-         * @ORM\Column(type="string", length=100)
+         * @ORM\Column(type="string", length=100, unique=true)
+         * @Assert\NotBlank(message="The designation cannot be blank.")
          */
         private $designation;
         
