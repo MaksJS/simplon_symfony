@@ -3,7 +3,8 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
-
+    use Doctrine\Common\Collections\ArrayCollection;
+    
     /**
      * @ORM\Entity
      * @ORM\Table(name="categories")
@@ -21,4 +22,48 @@
          * @ORM\Column(type="string", length=100)
          */
         private $designation;
+        
+        /**
+         * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+         */
+        private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
     }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set designation
+     *
+     * @param string $designation
+     *
+     * @return Category
+     */
+    public function setDesignation($designation)
+    {
+        $this->designation = $designation;
+
+        return $this;
+    }
+
+    /**
+     * Get designation
+     *
+     * @return string
+     */
+    public function getDesignation()
+    {
+        return $this->designation;
+    }
+}
