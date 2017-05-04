@@ -11,13 +11,6 @@
     
     class ProductsController extends Controller {
 
-        const PRODUCTS_TEST = [
-            ['id' => 1, 'reference' => 'AFR-1'],
-            ['id' => 2, 'reference' => 'AFR-2'],
-            ['id' => 3, 'reference' => 'AFR-3'],
-            ['id' => 4, 'reference' => 'AFR-4']
-        ];
-
         /**
          * @Route(
          *    "/products.{_format}", 
@@ -104,10 +97,16 @@
                     // on récupère les données passées en POST
                     $reference = $request->request->get('reference');
                     $price = $request->request->get('price');
+                    $category_id = $request->request->get('category_id');
                     
                     if ($product) {
                         $product->setReference($reference);
                         $product->setPrice($price);
+
+                        // on récupère la Catégorie via Doctrine
+                        $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
+                        // on utilise le setter...
+                        $product->setCategory($categorie);
 
                         $em = $this->getDoctrine()->getManager();
                         $em->flush();
@@ -155,10 +154,16 @@
                     // on récupère les données passées en POST
                     $reference = $request->request->get('reference');
                     $price = $request->request->get('price');
-                    
+                    $category_id = $request->request->get('category_id');
+
                     $product = new Product();
                     $product->setReference($reference);
                     $product->setPrice($price);
+
+                    // on récupère la Catégorie via Doctrine
+                    $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
+                    // on utilise le setter...
+                    $product->setCategory($categorie);
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($product);
