@@ -10,6 +10,16 @@
 <label>Price</label>
 <input type="number" name="price" value="{{ product.price }}"   />
 <br/>
+<label>Category</label>
+<select name="category">
+    <% if !product.category %>
+    <option value="" selected>aucune catégorie</option>
+    <% endif %>
+    {% for category in categories %}
+        <option value="{{ category.id }}" {{ product.category and product.category.id == category.id ? 'selected' : ''}}>{{ category.designation }}</option>
+    {% endfor %}
+</select>
+<br />
 <input type="submit" class="btn btn-primary" value="Editer" />
 </form>
 

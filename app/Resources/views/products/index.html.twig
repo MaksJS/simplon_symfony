@@ -31,6 +31,9 @@
             Référence
         </th>
         <th>
+            Catégorie
+        </th>
+        <th>
             Actions
         </th>
     </tr>
@@ -38,6 +41,7 @@
         <tr id="product-{{ product.id}}">
             <td>{{ product.id }}</td>
             <td>{{ product.reference }}</td>
+            <td>{{ product.category ? product.category.designation : 'aucune' }}</td>
             <td>
                 <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
                 <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>

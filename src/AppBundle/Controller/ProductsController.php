@@ -90,7 +90,11 @@
             switch ($request->getMethod()) {
                 case "GET":
                     if ($product) {
-                        return $this->render('products/edit.html.twig', compact('product'));
+                        // chercher toutes les catégories dans l'entity manager
+                        $categories = $this->getDoctrine()
+                            ->getRepository('AppBundle:Category') // on récupère le Repository Category
+                            ->findAll(); // on récupère toutes les catégories
+                        return $this->render('products/edit.html.twig', compact('product', 'categories'));
                     }
                     else {
                         throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
@@ -142,7 +146,11 @@
         public function createAction(Request $request) {
             switch ($request->getMethod()) {
                 case "GET":
-                    return $this->render('products/create.html.twig');
+                    // chercher toutes les catégories dans l'entity manager
+                    $categories = $this->getDoctrine()
+                        ->getRepository('AppBundle:Category') // on récupère le Repository Category
+                        ->findAll(); // on récupère toutes les catégories
+                    return $this->render('products/create.html.twig', compact('categories')); // les passer à la vue
                 case "POST":
                     // on récupère les données passées en POST
                     $reference = $request->request->get('reference');

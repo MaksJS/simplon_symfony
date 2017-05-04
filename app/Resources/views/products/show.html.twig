@@ -4,8 +4,14 @@
 
 
 <h1>Product</h1>
-<ul>
-<li>ID : {{ product.id }} - REF: {{ product.reference }} - Price : {{ product.price }} EUROS</li>
-</ul>
+
+
+ID : {{ product.id }}
+<br />
+REF: {{ product.reference }} 
+<br />
+Price : {{ product.price }} EUROS
+<br />
+Category : {{ product.category ? product.category.designation : 'aucune' }}
 
 {% endblock %}
