@@ -103,11 +103,13 @@
                         $product->setReference($reference);
                         $product->setPrice($price);
 
-                        // on récupère la Catégorie via Doctrine
-                        $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
-                        // on utilise le setter...
-                        $product->setCategory($categorie);
-
+                        if ($category_id) {
+                            // on récupère la Catégorie via Doctrine
+                            $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
+                            // on utilise le setter...
+                            $product->setCategory($categorie);
+                        }
+                        
                         $em = $this->getDoctrine()->getManager();
                         $em->flush();
                     }
@@ -160,10 +162,12 @@
                     $product->setReference($reference);
                     $product->setPrice($price);
 
-                    // on récupère la Catégorie via Doctrine
-                    $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
-                    // on utilise le setter...
-                    $product->setCategory($categorie);
+                    if ($category_id) {
+                        // on récupère la Catégorie via Doctrine
+                        $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
+                        // on utilise le setter...
+                        $product->setCategory($categorie);
+                    }
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($product);
