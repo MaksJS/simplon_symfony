@@ -29,10 +29,9 @@
 
         /**
          * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-         * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+         * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
          */
         private $category;
-
     
     /**
      * Get id
