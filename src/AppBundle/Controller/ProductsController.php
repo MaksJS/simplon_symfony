@@ -109,7 +109,7 @@
                             // on utilise le setter...
                             $product->setCategory($categorie);
                         }
-                        
+
                         $em = $this->getDoctrine()->getManager();
                         $em->flush();
                     }
@@ -167,6 +167,19 @@
                         $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
                         // on utilise le setter...
                         $product->setCategory($categorie);
+                    }
+
+                    $validator = $this->get('validator'); // j'appelle le container Validator
+                    $errors = $validator->validate($product); // on recherche les erreurs
+                    
+                    if (count($errors) > 0) {
+                        switch ($request->getRequestFormat()) {
+                            case "json":
+                                return $this->json('Product store failed: '. $errors);
+                            case "html":
+                                $categories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
+                                return $this->render('products/create.html.twig', compact('categories', 'errors'));
+                        }
                     }
 
                     $em = $this->getDoctrine()->getManager();

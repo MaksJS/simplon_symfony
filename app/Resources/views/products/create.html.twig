@@ -2,12 +2,20 @@
 
 {% block body %}
 
+{% if errors is defined %}
+    <ul>
+        {% for error in errors %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <form action="{{ path('app_products_create') }}" class="well" method="post">
 <label>Reference</label>
 <input type="text" name="reference" />
 <br />
 <label>Price</label>
-<input type="number" name="price" />
+<input type="text" name="price" />
 <br />
 <label>Category</label>
 <select name="category_id">

@@ -3,10 +3,13 @@
     namespace AppBundle\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     
     /**
      * @ORM\Entity
      * @ORM\Table(name="products")
+     * @UniqueEntity("reference")
      */
     class Product {
 
@@ -18,12 +21,15 @@
         private $id;
 
         /**
-         * @ORM\Column(type="string", length=100)
+         * @ORM\Column(type="string", length=100, unique=true)
+         * @Assert\NotBlank(message="The reference cannot be blank.")
          */
         private $reference;
 
         /**
          * @ORM\Column(type="decimal", scale=2)
+         * @Assert\NotBlank(message="The price cannot be blank.")
+         * @Assert\Type(type="digit", message="The price is not a valid digit.")
          */
         private $price;
 
