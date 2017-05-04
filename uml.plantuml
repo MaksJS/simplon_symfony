@@ -10,5 +10,25 @@ namespace Entity {
         + id: integer
         + designation: string
     }
+
+    Product "*" -- "*" Category
+}
+
+namespace Database {
+    class product {
+        + id: INT(10), PRIMARY KEY
+        + reference: VARCHAR(100)
+        + price: FLOAT
+    }
+
+    class category {
+        + id: INT(10), PRIMARY KEY
+        + designation: VARCHAR(100)
+    }
+
+    class product_category {
+        + product_id: INT(10), FOREIGN KEY
+        + category_id: INT(10), FOREIGN KEY
+    }
 }
 @enduml
