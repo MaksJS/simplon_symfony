@@ -11,7 +11,7 @@
 <input type="number" name="price" value="{{ product.price }}"   />
 <br/>
 <label>Category</label>
-<select name="category">
+<select name="category_id">
     {% for category in categories %}
         <option value="{{ category.id }}" {{product.category and product.category.id == category.id ? 'selected' : ''}}>{{ category.designation }}</option>
     {% endfor %}
