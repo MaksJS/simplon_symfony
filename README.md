@@ -11,6 +11,6 @@ $ php bin/console doctrine:schema:update --force
 
 $ php bin/console generate:doctrine:crud --entity=AppBundle:Foo --format=annotation --with-write --no-interaction
 
-$ php bin/console generate:doctrine:entity # Generate a new entity
+$ php bin/console generate:doctrine:entity 
 
-$ php bin/console generate:doctrine:entities AppBundle # Generate getter and setter for all entities
+$ php bin/console generate:doctrine:entities AppBundle 
