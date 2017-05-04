@@ -8,7 +8,11 @@
     use Symfony\Component\HttpFoundation\Response;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
     use AppBundle\Entity\Product;
-    
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+    use Symfony\Component\Form\Extension\Core\Type\NumberType;
+    use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+    use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
     class ProductsController extends Controller {
 
         /**
@@ -87,7 +91,10 @@
                         $categories = $this->getDoctrine()
                             ->getRepository('AppBundle:Category') // on récupère le Repository Category
                             ->findAll(); // on récupère toutes les catégories
-                        return $this->render('products/edit.html.twig', compact('product', 'categories'));
+                        return $this->render('products/edit.html.twig', [
+                            'categories' => $categories,
+                            'form' => $this->createCreateOrEditForm($product)->createView()
+                        ]);
                     }
                     else {
                         throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
@@ -147,11 +154,17 @@
         public function createAction(Request $request) {
             switch ($request->getMethod()) {
                 case "GET":
+
                     // chercher toutes les catégories dans l'entity manager
                     $categories = $this->getDoctrine()
                         ->getRepository('AppBundle:Category') // on récupère le Repository Category
                         ->findAll(); // on récupère toutes les catégories
-                    return $this->render('products/create.html.twig', compact('categories')); // les passer à la vue
+
+                    return $this->render('products/create.html.twig', [
+                        'categories' => $categories,
+                        'form' => $this->createCreateOrEditForm()->createView()
+                    ]);
+
                 case "POST":
                     // on récupère les données passées en POST
                     $reference = $request->request->get('reference');
@@ -234,5 +247,23 @@
                         throw $this->createNotFoundException('No product found for id '.$id); // on lève une erreur 404
                     }
             }
+        }
+
+        private function createCreateOrEditForm(Product $product = null) {
+            return $this
+                ->createFormBuilder($product)
+                ->add('reference', TextType::class)
+                ->add('price', NumberType::class)
+                ->add('category', EntityType::class, [
+                    'class' => 'AppBundle:Category',
+                    'choice_label' => 'designation',
+                ])
+                ->add('save', SubmitType::class, [
+                    'label' => 'Save',
+                    'attr' => [
+                        'class' => 'btn btn-primary'
+                        ]
+                    ])
+                ->getForm();
         }
     }

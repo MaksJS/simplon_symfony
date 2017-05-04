@@ -2,30 +2,8 @@
 
 {% block body %}
 
-{% if errors is defined %}
-    <ul>
-        {% for error in errors %}
-            <li>{{ error.message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-<form action="{{ path('app_products_create') }}" class="well" method="post">
-<label>Reference</label>
-<input type="text" name="reference" />
-<br />
-<label>Price</label>
-<input type="text" name="price" />
-<br />
-<label>Category</label>
-<select name="category_id">
-    {% for category in categories %}
-        <option value="{{ category.id }}">{{ category.designation }}</option>
-    {% endfor %}
-</select>
-<br />
-<input type="submit" class="btn btn-primary" value="Créer" />
-</form>
-
+{{ form_start(form) }}
+    {{ form_widget(form, {'attr': {'class': 'well'}}) }}
+{{ form_end(form) }}
 
 {% endblock %}
