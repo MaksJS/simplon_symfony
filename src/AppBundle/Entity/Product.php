@@ -29,7 +29,7 @@
         /**
          * @ORM\Column(type="decimal", scale=2)
          * @Assert\NotBlank(message="The price cannot be blank.")
-         * @Assert\Type(type="digit", message="The price is not a valid digit.")
+         * @Assert\Type(type="float", message="The price is not a valid float.")
          */
         private $price;
 
