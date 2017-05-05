@@ -1,0 +1,78 @@
+@startuml
+namespace Entity {
+
+    class Client {
+        + id: integer
+        + designation: string
+        + email: string
+        + website: string
+    }
+
+    class Invoice {
+        + id: integer
+        + state: integer
+        + getDesignation(): string
+        + getTotal(): float
+    }
+
+    class InvoiceLine {
+        + id: integer
+        + quantity: integer
+        + getTotal(): float
+    }
+
+    class Product {
+        + id: integer
+        + reference: string
+        + price: float
+        + getPrice(): float
+    }
+
+    enum InvoiceState {
+        OPENED,
+        CLOSED
+    }
+
+    Invoice "1" -- "*" Product
+    Client "1" -- "*" Invoice
+    Invoice "1" -- "*" InvoiceLine
+    InvoiceLine "*" -- "*" Product
+
+    note right of Client 
+        Designation is unique, not blank
+        Email is unique, not blank and of type 'email'
+        Website is unique, not blank and of type 'url'
+    end note
+
+    note right of Invoice 
+        Invoice::getTotal method returns the total of the invoice lines
+        Invoice::getDesignation method returns a formatted string 'invoice-' concatenated with the id of the invoice
+    end note
+
+    note right of InvoiceLine
+        Quantity is an integer between 1 and 99
+        InvoiceLine::getTotal returns the total of the article price * quantity
+    end note
+
+    note right of InvoiceState 
+        Invoice state are mapped by Class constant
+        In database they should be integer, 0 for opened, 1 for closed
+    end note
+}
+
+note right of Entity
+    - Ajouter / modifier / supprimer / lister les clients.
+    - Supprimer un client ne supprime pas les factures / lignes de facture.
+    - Ajouter / modifier / supprimer une facture.
+    - La modification d'une facture permet d'ajouter / modifier / supprimer la ligne d'une facture.
+    - L'ajout d'une facture ajoute une nouvelle facture pour un client donné, sans ligne de facture.
+    - Une facture est ouverte par défaut.
+    - On peut cloturer une facture, ce qui rend impossible son édition.
+    - Supprimer une facture supprime également les lignes de cette facture mais pas les produits.
+    - On veut pouvoir récupérer la liste des clients au format JSON.
+    - On pourra utiliser sqlite ou mysql au choix.
+    - On utilisera le formbuilder et les types de Formulaire.
+    - On souhaite que la page affichant la liste des clients soit disponible en français et en anglais ;
+    On doit pouvoir passer de l'un à l'autre via un bouton.
+end note
+@enduml
