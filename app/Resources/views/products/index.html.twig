@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<h1>Products</h1>
+<h1>{{ 'products' | trans }}</h1>
 
 {% for message in app.session.flashBag.get('notice') %}
     <div class="panel panel-success">

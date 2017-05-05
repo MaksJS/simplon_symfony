@@ -80,7 +80,11 @@
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->addFlash('notice', 'Le produit '.$product->getId().' a bien été édité');
+                $this->addFlash('notice', $this->get('translator')
+                    ->trans('edit_product_success', 
+                        ['%id%' => $product->getId()]
+                    )
+                );
                 return $this->redirectToRoute('app_products_index');
             }
 
