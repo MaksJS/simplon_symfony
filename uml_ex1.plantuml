@@ -61,8 +61,11 @@ namespace Entity {
 
 note right of Entity
     - Ajouter / modifier / supprimer / lister les clients.
+    - Afficher un client et donner la liste de ses factures.
     - Supprimer un client ne supprime pas les factures / lignes de facture.
-    - Ajouter / modifier / supprimer une facture.
+    - Ajouter / modifier / supprimer / afficher une facture.
+    - Afficher une facture affiche toutes ses lignes, son cout total. 
+    Une ligne est composée d'une désignation de produit, une quantité et un total.
     - La modification d'une facture permet d'ajouter / modifier / supprimer la ligne d'une facture.
     - L'ajout d'une facture ajoute une nouvelle facture pour un client donné, sans ligne de facture.
     - Une facture est ouverte par défaut.
