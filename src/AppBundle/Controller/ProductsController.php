@@ -90,6 +90,45 @@
         }
 
         /**
+         * @Route("/products/api/{id}")
+         * @Method({"PUT", "PATCH"})
+         */
+        public function apiEditAction(Request $request, int $id) {
+
+            $product = $this->getDoctrine()->getRepository('AppBundle:Product')->find($id);
+ 
+            if (!$product) { 
+                return $this->json('Product not found', 404); 
+            } 
+            else {
+                $reference = $request->request->get('reference'); 
+                $price = $request->request->get('price'); 
+                $category_id = $request->request->get('category_id');
+
+                $product->setReference($reference);
+                $product->setPrice($price);
+
+                if ($category_id) { 
+                    $categorie = $this->getDoctrine()->getRepository('AppBundle:Category')->find($category_id);
+                    $product->setCategory($categorie); 
+                }
+                
+                $validator = $this->get('validator'); 
+                $errors = $validator->validate($product);
+
+                if (count($errors) > 0) { 
+                    return $this->json('Product edit ko cause:'. $errors, 400); 
+                }
+                else {
+                    $em = $this->getDoctrine()->getManager(); 
+                    $em->flush(); 
+                    return $this->json('Product edit ok', 200); 
+                }
+
+            } 
+        }
+
+        /**
          * @Route("/products/create")
          * @Method({"GET", "POST"})
          */
