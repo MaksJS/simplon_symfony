@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Invoicelines list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoiceLine in invoiceLines %}
+            <tr>
+                <td><a href="{{ path('invoiceline_show', { 'id': invoiceLine.id }) }}">{{ invoiceLine.id }}</a></td>
+                <td>{{ invoiceLine.quantity }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('invoiceline_show', { 'id': invoiceLine.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('invoiceline_edit', { 'id': invoiceLine.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('invoiceline_new') }}">Create a new invoiceLine</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Invoice
@@ -31,11 +32,12 @@ class Invoice
      *
      * @ORM\Column(name="state", type="smallint")
      */
-    private $state;
+    private $state = self::OPENED;
 
     /**
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="invoices")
-     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotBlank(message="The client cannot be blank.")
      */
     private $client;
 
@@ -48,7 +50,6 @@ class Invoice
      * Constructor
      */
     public function __contruct() {
-        $this->state = self::OPENED;
         $this->invoiceLines = new ArrayCollection();
     }
 
@@ -93,7 +94,7 @@ class Invoice
      */
     public function getDesignation()
     {
-        return "invoice-".str_pad($this->id, 2, '0', STR_PAD_LEFT); // invoice-001
+        return "invoice-".str_pad($this->id, 4, '0', STR_PAD_LEFT); // invoice-001
     }
 
     /**
@@ -166,5 +167,13 @@ class Invoice
     public function getInvoiceLines()
     {
         return $this->invoiceLines;
+    }
+
+    public function isOpened() {
+        return $this->state === self::OPENED;
+    }
+
+    public function isClosed() {
+        return $this->state === self::CLOSED;
     }
 }
