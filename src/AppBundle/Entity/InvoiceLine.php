@@ -35,6 +35,17 @@ class InvoiceLine
      */
     private $quantity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="invoiceLines")
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $invoice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="invoiceLines")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $product;
 
     /**
      * Get id
@@ -77,6 +88,54 @@ class InvoiceLine
      */
     public function getTotal()
     {
-        return 0;
+        return $this->quantity * $this->getProduct()->getPrice();
+    }
+
+    /**
+     * Set invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     *
+     * @return InvoiceLine
+     */
+    public function setInvoice(\AppBundle\Entity\Invoice $invoice = null)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Get invoice
+     *
+     * @return \AppBundle\Entity\Invoice
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \AppBundle\Entity\Product $product
+     *
+     * @return InvoiceLine
+     */
+    public function setProduct(\AppBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \AppBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

@@ -1,44 +1,57 @@
 <?php
 
-    namespace AppBundle\Entity;
+namespace AppBundle\Entity;
 
-    use Doctrine\ORM\Mapping as ORM;
-    use Symfony\Component\Validator\Constraints as Assert;
-    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="products")
+ * @UniqueEntity("reference")
+ */
+class Product {
+
+    /**
+    * @ORM\Column(type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+    private $id;
+
+    /**
+    * @ORM\Column(type="string", length=100, unique=true)
+    * @Assert\NotBlank(message="The reference cannot be blank.")
+    */
+    private $reference;
+
+    /**
+    * @ORM\Column(type="decimal", scale=2)
+    * @Assert\NotBlank(message="The price cannot be blank.")
+    * @Assert\Type(type="float", message="The price is not a valid float.")
+    */
+    private $price;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+    * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
+    */
+    private $category;
+
+    /**
+    * @ORM\OneToMany(targetEntity="InvoiceLine", mappedBy="product")
+    */
+    private $invoiceLines;
     
     /**
-     * @ORM\Entity
-     * @ORM\Table(name="products")
-     * @UniqueEntity("reference")
+     * Constructor
      */
-    class Product {
+    public function __contruct() {
+        $this->invoiceLines = new ArrayCollection();
+    }
 
-        /**
-         * @ORM\Column(type="integer")
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="AUTO")
-         */
-        private $id;
-
-        /**
-         * @ORM\Column(type="string", length=100, unique=true)
-         * @Assert\NotBlank(message="The reference cannot be blank.")
-         */
-        private $reference;
-
-        /**
-         * @ORM\Column(type="decimal", scale=2)
-         * @Assert\NotBlank(message="The price cannot be blank.")
-         * @Assert\Type(type="float", message="The price is not a valid float.")
-         */
-        private $price;
-
-        /**
-         * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-         * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
-         */
-        private $category;
-    
     /**
      * Get id
      *
@@ -119,5 +132,39 @@
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Add invoiceLine
+     *
+     * @param \AppBundle\Entity\InvoiceLine $invoiceLine
+     *
+     * @return Product
+     */
+    public function addInvoiceLine(\AppBundle\Entity\InvoiceLine $invoiceLine)
+    {
+        $this->invoiceLines[] = $invoiceLine;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoiceLine
+     *
+     * @param \AppBundle\Entity\InvoiceLine $invoiceLine
+     */
+    public function removeInvoiceLine(\AppBundle\Entity\InvoiceLine $invoiceLine)
+    {
+        $this->invoiceLines->removeElement($invoiceLine);
+    }
+
+    /**
+     * Get invoiceLines
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvoiceLines()
+    {
+        return $this->invoiceLines;
     }
 }

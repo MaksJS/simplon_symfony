@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Invoice
@@ -38,8 +39,14 @@ class Invoice
      */
     private $client;
 
+    /**
+     * @ORM\OneToMany(targetEntity="InvoiceLine", mappedBy="invoice")
+     */
+    private $invoiceLines;
+
     public function __contruct() {
         $this->state = self::OPENED;
+        $this->invoiceLines = new ArrayCollection();
     }
 
     /**
@@ -95,5 +102,28 @@ class Invoice
     {
         return 0;
     }
-}
 
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Invoice
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+}

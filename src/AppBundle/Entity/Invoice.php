@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Invoice
@@ -38,8 +39,17 @@ class Invoice
      */
     private $client;
 
+    /**
+     * @ORM\OneToMany(targetEntity="InvoiceLine", mappedBy="invoice")
+     */
+    private $invoiceLines;
+    
+    /**
+     * Constructor
+     */
     public function __contruct() {
         $this->state = self::OPENED;
+        $this->invoiceLines = new ArrayCollection();
     }
 
     /**
@@ -89,11 +99,15 @@ class Invoice
     /**
      * Get total
      *
-     * @return float
+     * @return string
      */
     public function getTotal()
     {
-        return 0;
+        $total = 0;
+        foreach($this->getInvoiceLines() as $invoiceLine) {
+            $total += $invoiceLine->getTotal();
+        }
+        return $total.'€';
     }
 
     /**
@@ -118,5 +132,39 @@ class Invoice
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * Add invoiceLine
+     *
+     * @param \AppBundle\Entity\InvoiceLine $invoiceLine
+     *
+     * @return Invoice
+     */
+    public function addInvoiceLine(\AppBundle\Entity\InvoiceLine $invoiceLine)
+    {
+        $this->invoiceLines[] = $invoiceLine;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoiceLine
+     *
+     * @param \AppBundle\Entity\InvoiceLine $invoiceLine
+     */
+    public function removeInvoiceLine(\AppBundle\Entity\InvoiceLine $invoiceLine)
+    {
+        $this->invoiceLines->removeElement($invoiceLine);
+    }
+
+    /**
+     * Get invoiceLines
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvoiceLines()
+    {
+        return $this->invoiceLines;
     }
 }
