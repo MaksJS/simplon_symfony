@@ -144,38 +144,5 @@ class Client
     {
         return $this->website;
     }
-
-    /**
-     * Add invoice
-     *
-     * @param \AppBundle\Entity\Invoice $invoice
-     *
-     * @return Client
-     */
-    public function addInvoice(\AppBundle\Entity\Invoice $invoice)
-    {
-        $this->invoices[] = $invoice;
-
-        return $this;
-    }
-
-    /**
-     * Remove invoice
-     *
-     * @param \AppBundle\Entity\Invoice $invoice
-     */
-    public function removeInvoice(\AppBundle\Entity\Invoice $invoice)
-    {
-        $this->invoices->removeElement($invoice);
-    }
-
-    /**
-     * Get invoices
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getInvoices()
-    {
-        return $this->invoices;
-    }
 }
+
