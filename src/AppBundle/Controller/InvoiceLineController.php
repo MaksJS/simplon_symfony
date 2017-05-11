@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\InvoiceLine;
+use AppBundle\Entity\Invoice;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +19,16 @@ class InvoiceLineController extends Controller
     /**
      * Creates a new invoiceLine entity.
      *
-     * @Route("/new", name="invoiceline_new")
+     * @Route("/new/{invoiceId}", name="invoiceline_new")
      * @Method("POST")
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, int $invoiceId)
     {
         $invoiceLine = new Invoiceline();
+        $em = $this->getDoctrine()->getManager();
+        $invoice = $em->getRepository('AppBundle:Invoice')->find($invoiceId);
+        $invoiceLine->setInvoice($invoice);
+
         $form = $this->createForm('AppBundle\Form\InvoiceLineType', $invoiceLine);
         $form->handleRequest($request);
 

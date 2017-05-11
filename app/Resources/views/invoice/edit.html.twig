@@ -32,10 +32,10 @@
         {% endfor %}
             <tr>
                 <td colspan="3">
-                    {{ form_start(add_form) }}
-                        {{ form_widget(add_form) }}
+                    {{ form_start(add_line_form, {'action': path('invoiceline_new', { 'invoiceId' : invoice.id }), 'method': 'POST'}) }}
+                        {{ form_widget(add_line_form) }}
                         <input type="submit" value="Add a line" />
-                    {{ form_end(add_form) }}
+                    {{ form_end(add_line_form) }}
                 </td>
             </tr>
         </tbody>

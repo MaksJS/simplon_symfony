@@ -119,7 +119,7 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'add_form' => $addInvoiceLineForm->createView()
+            'add_line_form' => $addInvoiceLineForm->createView()
         ));
     }
 
