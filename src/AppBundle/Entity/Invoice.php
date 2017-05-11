@@ -100,7 +100,7 @@ class Invoice
     /**
      * Get total
      *
-     * @return string
+     * @return float
      */
     public function getTotal()
     {
@@ -108,7 +108,7 @@ class Invoice
         foreach($this->getInvoiceLines() as $invoiceLine) {
             $total += $invoiceLine->getTotal();
         }
-        return $total.'€';
+        return $total;
     }
 
     /**
@@ -175,5 +175,9 @@ class Invoice
 
     public function isClosed() {
         return $this->state === self::CLOSED;
+    }
+
+    public function __toString() {
+        return $this->getDesignation();
     }
 }

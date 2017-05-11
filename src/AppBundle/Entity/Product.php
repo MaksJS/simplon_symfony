@@ -167,4 +167,8 @@ class Product {
     {
         return $this->invoiceLines;
     }
+
+    public function __toString() {
+        return $this->reference;
+    }
 }
