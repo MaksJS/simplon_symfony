@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Invoice;
+use AppBundle\Entity\InvoiceLine;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -106,6 +107,8 @@ class InvoiceController extends Controller
         $editForm = $this->createForm('AppBundle\Form\InvoiceType', $invoice);
         $editForm->handleRequest($request);
 
+        $addInvoiceLineForm = $this->createForm('AppBundle\Form\InvoiceLineType', new InvoiceLine());
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -116,6 +119,7 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'add_form' => $addInvoiceLineForm->createView()
         ));
     }
 
