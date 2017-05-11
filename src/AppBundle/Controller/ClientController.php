@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Client controller.
@@ -17,12 +18,29 @@ class ClientController extends Controller
     /**
      * Lists all client entities.
      *
-     * @Route("/", name="client_index")
+     * @Route(
+     *   ".{_format}", 
+     *   name="client_index",
+     *   defaults={"_format": "html"},
+     *   requirements={
+     *     "_format": "html|json"
+     *    }
+     * )
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        if ($request->getRequestFormat() === 'json') {
+            $clients = $em
+                ->createQueryBuilder()
+                ->select('c.id, c.designation, c.email, c.website')
+                ->from(Client::class, 'c')
+                ->getQuery()
+                ->getResult();
+            return $this->json($clients);
+        }
 
         $clients = $em->getRepository('AppBundle:Client')->findAll();
 
