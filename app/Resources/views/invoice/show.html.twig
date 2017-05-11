@@ -20,6 +20,37 @@
         </tbody>
     </table>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total ligne</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoiceLine in invoice.invoiceLines %}
+            <tr>
+                <td>{{ invoiceLine.product }}</a></td>
+                <td>{{ invoiceLine.quantity }}</td>
+                <td>{{ invoiceLine.product.price }}€</a></td>
+                <td>{{ invoiceLine.total }}€</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th colspan="1">
+                Total facture
+            </th>
+            <td colspan="2">
+            </td>
+            <td colspan="3">
+                {{ invoice.total }}€
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
     <ul>
         <li>
             <a href="{{ path('invoice_index') }}">Back to the list</a>
