@@ -6,7 +6,8 @@ use AppBundle\Entity\Invoice;
 use AppBundle\Entity\InvoiceLine;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Invoice controller.
@@ -35,17 +36,23 @@ class InvoiceController extends Controller
     /**
      * Lists all invoice entities.
      *
-     * @Route("/", name="invoice_index")
+     * @Route(
+    *    "/list/{page}", 
+    *     name="invoice_index",
+     *    defaults={"page": "1"},
+     * )
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $invoices = $em->getRepository('AppBundle:Invoice')->findAll();
-
+        $repository = $em->getRepository('AppBundle:Invoice');
+        $page = min($repository->nbPages(), $page);
+        
         return $this->render('invoice/index.html.twig', array(
-            'invoices' => $invoices,
+            'invoices' => $repository->getByPage($page),
+            'pagesCount' => $repository->nbPages(),
+            'page' => $page,
         ));
     }
 

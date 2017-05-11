@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use AppBundle\Entity\Invoice;
+
 /**
  * InvoiceRepository
  *
@@ -10,4 +13,17 @@ namespace AppBundle\Repository;
  */
 class InvoiceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getByPage($page = 1)
+    {
+        $query = $this->createQueryBuilder('invoice')
+            ->getQuery()
+            ->setFirstResult(($page-1) * Invoice::PER_PAGE)
+            ->setMaxResults(Invoice::PER_PAGE);
+
+        return new Paginator($query, $fetchJoinCollection = true);
+    }
+
+    public function nbPages() {
+        return ceil(count($this->getByPage()) / Invoice::PER_PAGE);
+    }
 }
