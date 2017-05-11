@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Client controller.
  *
- * @Route("client")
+ * @Route("{_locale}/client")
+ * defaults={_locale": "en"}
  */
 class ClientController extends Controller
 {
