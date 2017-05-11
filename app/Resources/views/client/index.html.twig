@@ -3,15 +3,6 @@
 {% block body %}
     <h1>Clients list</h1>
 
-    {% for message in app.session.flashBag.get('notice') %}
-        <div class="panel panel-success">
-        <div class="panel-heading">Message</div>
-            <div class="panel-body">
-                <p>{{ message }}</p>
-            </div>
-        </div>
-    {% endfor %}
-
     <table class="table table-bordered">
         <thead>
             <tr>
