@@ -24,6 +24,6 @@ class InvoiceRepository extends \Doctrine\ORM\EntityRepository
     }
 
     public function nbPages() {
-        return ceil(count($this->getByPage()) / Invoice::PER_PAGE);
+        return ceil(count($this->getByPage()) / Invoice::PER_PAGE) || 1;
     }
 }
