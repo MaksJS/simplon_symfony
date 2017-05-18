@@ -18,6 +18,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Client
 {
+
+    const PER_PAGE = 2;
+    
     /**
      * @var int
      *

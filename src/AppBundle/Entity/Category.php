@@ -14,6 +14,8 @@
      */
     class Category {
 
+        const PER_PAGE = 2;
+        
         /**
          * @ORM\Column(type="integer")
          * @ORM\Id
