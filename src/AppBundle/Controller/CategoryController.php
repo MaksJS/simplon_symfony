@@ -17,17 +17,18 @@ class CategoryController extends Controller
     /**
      * Lists all category entities.
      *
-     * @Route("/", name="category_index")
+     * @Route("/list/{page}", name="category_index", defaults={"page": "1"})
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $categories = $em->getRepository('AppBundle:Category')->findAll();
+        $paginator = $this->get('app.paginator');
+        $pagination = $paginator->paginate(Category::class, $page);
 
         return $this->render('category/index.html.twig', array(
-            'categories' => $categories,
+            'categories' => $pagination['paginator'],
+            'pagesCount' => $pagination['nbPages'],
+            'page' => $page,
         ));
     }
 

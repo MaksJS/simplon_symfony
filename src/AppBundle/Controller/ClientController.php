@@ -20,16 +20,16 @@ class ClientController extends Controller
      * Lists all client entities.
      *
      * @Route(
-     *   ".{_format}", 
+     *   "/list/{page}.{_format}", 
      *   name="client_index",
-     *   defaults={"_format": "html"},
+     *   defaults={"_format": "html", "page": "1"},
      *   requirements={
      *     "_format": "html|json"
      *    }
      * )
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $page)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -43,10 +43,13 @@ class ClientController extends Controller
             return $this->json($clients);
         }
 
-        $clients = $em->getRepository('AppBundle:Client')->findAll();
+        $paginator = $this->get('app.paginator');
+        $pagination = $paginator->paginate(Client::class, $page);
 
         return $this->render('client/index.html.twig', array(
-            'clients' => $clients,
+            'clients' => $pagination['paginator'],
+            'pagesCount' => $pagination['nbPages'],
+            'page' => $page
         ));
     }
 
