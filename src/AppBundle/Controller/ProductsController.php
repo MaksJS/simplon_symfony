@@ -13,23 +13,33 @@
 
         /**
          * @Route(
-         *    "/products.{_format}", 
-         *   defaults={"_format": "html"},
-         *  requirements={
-         *         "_format": "html|json"
-         *     })
+         *    "/products/list/{page}.{_format}", 
+         *   defaults={"_format": "html", "page": "1"},
+         * requirements={
+         *      "_format": "html|json"
+         *     }
+         * )
          * @Method("GET")
          */
-        public function indexAction(Request $request) {
-            $products = $this->getDoctrine()
-                ->getRepository('AppBundle:Product')
-                ->findAll();
+        public function indexAction(Request $request, $page) {
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('AppBundle:Product');
             switch ($request->getRequestFormat()) {
                 case "json":
+                    $products = $em
+                        ->createQueryBuilder()
+                        ->select('p.reference, p.price')
+                        ->from(Product::class, 'p')
+                        ->getQuery()
+                        ->getResult();
                     return $this->json($products);
                 case "html":
-                    return $this->render('products/index.html.twig', compact('products'));
-                    // compact('products') = ['products' => $products]
+                    $page = min($repository->nbPages(), $page);
+                    return $this->render('products/index.html.twig', array(
+                        'products' => $repository->getByPage($page),
+                        'pagesCount' => $repository->nbPages(),
+                        'page' => $page,
+                    ));
             }
         }
 
