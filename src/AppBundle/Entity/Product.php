@@ -10,9 +10,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="products")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
  * @UniqueEntity("reference")
  */
 class Product {
+
+    const PER_PAGE = 2;
 
     /**
     * @ORM\Column(type="integer")
