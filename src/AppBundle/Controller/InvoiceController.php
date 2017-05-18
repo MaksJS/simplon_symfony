@@ -73,6 +73,8 @@ class InvoiceController extends Controller
             $em->persist($invoice);
             $em->flush();
 
+            $this->addFlash('notice', 'Ajout effectué avec succès !');
+
             return $this->redirectToRoute('invoice_show', array('id' => $invoice->getId()));
         }
 
