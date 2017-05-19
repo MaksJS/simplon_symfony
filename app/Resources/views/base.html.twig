@@ -25,14 +25,21 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Clients
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                        <li><a href="{{ path('client_index', { '_format': 'json'}) }}">En JSON</a></li>
+                        <li><a href="{{ path('client_index', { '_format': 'json'}) }}">En JSON via Controller </a></li>
                         <li><a href="{{ path('client_index', { '_locale': 'en'}) }}">English</a></li>
                         <li><a href="{{ path('client_index', { '_locale': 'fr'}) }}">Français</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ path('invoice_index') }}">Invoices</a></li>
                     <li><a href="{{ path('app_products_index') }}">Products</a></li>
-                    <li><a href="{{ path('category_index') }}">Categories</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="{{ path('get_categories') }}">En JSON via FOSRestBundle</a></li>
+                        <li><a href="{{ path('category_index') }}">En HTML</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 </ul>
