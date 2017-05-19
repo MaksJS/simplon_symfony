@@ -10,3 +10,6 @@ app:
 categories:
     resource: AppBundle\Controller\CategoryController
     type:     rest
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
