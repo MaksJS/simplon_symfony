@@ -6,14 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="products")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @UniqueEntity("reference")
  */
 class Product {
+
+    use TimestampableEntity, SoftDeleteableEntity;
 
     const PER_PAGE = 2;
 
@@ -47,7 +53,7 @@ class Product {
     * @ORM\OneToMany(targetEntity="InvoiceLine", mappedBy="product")
     */
     private $invoiceLines;
-    
+
     /**
      * Constructor
      */

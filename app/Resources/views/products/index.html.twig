@@ -34,6 +34,9 @@
             Catégorie
         </th>
         <th>
+            Créé le
+        </th>
+        <th>
             Actions
         </th>
     </tr>
@@ -42,6 +45,7 @@
             <td>{{ product.id }}</td>
             <td>{{ product.reference }}</td>
             <td>{{ product.category ? product.category.designation : 'aucune' }}</td>
+            <td>{{ product.createdAt.format('d/m/Y') }}
             <td>
                 <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
                 <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>
