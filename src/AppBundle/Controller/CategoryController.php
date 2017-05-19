@@ -5,14 +5,16 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\FOSRestController;
 
 /**
  * Category controller.
  *
  * @Route("category")
  */
-class CategoryController extends Controller
+class CategoryController extends FOSRestController
 {
     /**
      * Lists all category entities.
@@ -133,5 +135,35 @@ class CategoryController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * JSON API
+     */
+
+    public function getCategoriesAction() {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em
+            ->createQueryBuilder()
+            ->select('c.id, c.designation')
+            ->from(Category::class, 'c')
+            ->getQuery()
+            ->getResult();
+        $view = $this->view($data, 200);
+        return $this->handleView($view);
+    }
+
+    public function getCategorieAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em
+            ->createQueryBuilder()
+            ->select('c.id, c.designation')
+            ->from(Category::class, 'c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+        $view = $this->view($data, 200);
+        return $this->handleView($view);
     }
 }

@@ -6,3 +6,7 @@ simplon_blog:
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+categories:
+    resource: '@AppBundle/Controller/'
+    type:     rest
