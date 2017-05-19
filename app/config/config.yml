@@ -86,3 +86,11 @@ fos_rest:
         rules:
             - { path: '^/categories', priorities: ['json'], fallback_format: 'json' }
             - { path: '^/', priorities: ['html'], fallback_format: 'html' }
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
