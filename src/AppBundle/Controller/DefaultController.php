@@ -16,12 +16,4 @@ class DefaultController extends Controller
     {
         return $this->redirectToRoute('client_index');
     }
-    
-    /**
-     * @Route("/admin")
-     */
-    public function adminAction()
-    {
-        return new Response('<html><body>Admin page!</body></html>');
-    }
 }
