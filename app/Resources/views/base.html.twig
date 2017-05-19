@@ -40,6 +40,13 @@
                         <li><a href="{{ path('category_index') }}">En HTML</a></li>
                         </ul>
                     </li>
+                    <li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a>Connecté en tant que : {{ app.user.username }}</a>
+                        {% else %}
+                            <a href="{{ path('login') }}">Se connecter</a>
+                        {% endif %}
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 </ul>
