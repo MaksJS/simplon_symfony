@@ -8,6 +8,7 @@
     use Symfony\Component\HttpFoundation\Response;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
     use AppBundle\Entity\Product;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
     class ProductsController extends Controller {
 
@@ -176,6 +177,7 @@
          *     }
          * ) 
          * @Method("DELETE")
+         * @Security("has_role('ROLE_ADMIN')")
          */
         public function deleteAction(Request $request, $id) {
             $product = $this->getDoctrine()

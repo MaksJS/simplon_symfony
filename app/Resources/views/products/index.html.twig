@@ -49,11 +49,13 @@
             <td>
                 <a href="{{ path('app_products_show', {id: product.id}) }}">Voir</a>
                 <a href="{{ path('app_products_edit', {id: product.id}) }}">Editer</a>
-                <form action="{{ path('app_products_delete', {id: product.id}) }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <input type="submit" value="Supprimer" />
-                </form>
-                <button onClick="deleteProduct({{ product.id }})">Supprimer avec ajax</button>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <form action="{{ path('app_products_delete', {id: product.id}) }}" method="post" style="display:inline" onsubmit="return confirm('êtes-vous sûr ?')">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <input type="submit" value="Supprimer" />
+                    </form>
+                    <button onClick="deleteProduct({{ product.id }})">Supprimer avec ajax</button>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
