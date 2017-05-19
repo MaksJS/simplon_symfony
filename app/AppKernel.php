@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
+            $bundles[] = new Bazinga\Bundle\FakerBundle\BazingaFakerBundle();
         }
 
         return $bundles;

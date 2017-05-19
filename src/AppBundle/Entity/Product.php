@@ -21,7 +21,7 @@ class Product {
 
     use TimestampableEntity, SoftDeleteableEntity;
 
-    const PER_PAGE = 2;
+    const PER_PAGE = 10;
 
     /**
     * @ORM\Column(type="integer")
