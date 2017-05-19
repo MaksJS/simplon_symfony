@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest; 
 
 /**
  * Category controller.
@@ -138,24 +139,26 @@ class CategoryController extends FOSRestController
     }
 
     /**
-     * JSON API
+     * @Rest\View()
      */
-
     public function getCategoriesAction() {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em
+        return $this
+            ->getDoctrine()
+            ->getManager()
             ->createQueryBuilder()
             ->select('c.id, c.designation')
             ->from(Category::class, 'c')
             ->getQuery()
             ->getResult();
-        $view = $this->view($data, 200);
-        return $this->handleView($view);
     }
 
+    /**
+     * @Rest\View()
+     */
     public function getCategorieAction($id) {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em
+        return $this
+            ->getDoctrine()
+            ->getManager()
             ->createQueryBuilder()
             ->select('c.id, c.designation')
             ->from(Category::class, 'c')
@@ -163,7 +166,5 @@ class CategoryController extends FOSRestController
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
-        $view = $this->view($data, 200);
-        return $this->handleView($view);
     }
 }

@@ -8,5 +8,5 @@ app:
     type: annotation
 
 categories:
-    resource: '@AppBundle/Controller/'
+    resource: AppBundle\Controller\CategoryController
     type:     rest
